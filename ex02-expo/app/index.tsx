@@ -1,17 +1,11 @@
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import {
-  Alert,
-  Button,
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
-// import { FlatListExample } from "@/components/FlatListExample";
+import { Alert, StyleSheet, ScrollView, Pressable, Image as RNImage, View } from "react-native";
+
+import { Provider as PaperProvider, Appbar, Button, Card, Text, TextInput, Avatar } from 'react-native-paper';
+
+
+
 import { SectionListExample } from "@/components/SectionListExample";
 
 export default function Index() {
@@ -19,96 +13,112 @@ export default function Index() {
   const [idade, onChangeIdade] = useState("");
   const [showDetails, setShowDetails] = useState(true);
   const anoNasc = new Date().getFullYear() - parseInt(idade);
+
+  const handleOkPress = () => Alert.alert("Botão OK pressionado");
+  const handleCancelPress = () => Alert.alert("Botão Cancel pressionado");
+  const handleTaskListPress = () => router.navigate("/taskList");
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Olá Turma!</Text>
-      <Image
-        style={styles.avatar}
-        source={require("@/assets/images/avatar.jpg")}
-        resizeMode="cover"
-      />
-      <Pressable
-        onPress={() => {
-          setShowDetails(!showDetails);
-        }}
-      >
-        <Text numberOfLines={showDetails ? 0 : 1} style={styles.text}>
-          Este é um App de exemplo da disciplina Programação Web e Mobile do
-          Curso de Ciência da Computação da Universidade Católica de Pernambuco
-          (semestre 2025.2)
-        </Text>
-      </Pressable>
-      {!isNaN(anoNasc) && <Text>Você nasceu em {anoNasc}</Text>}
-      <TextInput
-        style={styles.input}
-        onChangeText={onChangeIdade}
-        value={idade}
-        placeholder="Qual a sua idade?"
-        keyboardType="numeric"
-      />
-      <View style={styles.buttonsContainer}>
-        <Button
-          onPress={() => Alert.alert("Botão OK pressionado")}
-          title="     OK     "
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
+    
+    <ScrollView contentContainerStyle={styles.containerBase}>
+        
+        <Text variant="displayMedium" style={styles.titleText}>Olá Turma!</Text>
+
+        <Avatar.Image
+          style={styles.avatar}
+          size={150} 
+          source={require("@/assets/images/avatar.jpg")}
         />
-        <Button
-          onPress={() => Alert.alert("Botão Cancel pressionado")}
-          title="Cancel"
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
+
+        <Card style={styles.card}>
+          <Pressable onPress={() => setShowDetails(!showDetails)}>
+           
+            <Card.Content>
+              <Text variant="bodyMedium" style={styles.descriptionText} numberOfLines={showDetails ? undefined : 1}>
+                Este é um App de exemplo da disciplina Programação Web e Mobile do
+                Curso de Ciência da Computação da Universidade Católica de Pernambuco
+                (semestre 2025.2)
+              </Text>
+            </Card.Content>
+          </Pressable>
+        </Card>
+
+        {!isNaN(anoNasc) && <Text variant="bodyLarge" style={{marginTop: 10}}>Você nasceu em {anoNasc}</Text>}
+
+    
+        <TextInput
+          label="Qual a sua idade?" 
+          value={idade}
+          onChangeText={onChangeIdade}
+          keyboardType="numeric"
+          style={styles.input}
+          mode="outlined" 
+          textAlign="center"
         />
-      </View>
-      <Button
-        title="Ir para Lista de Tarefas"
-        onPress={() => router.navigate("/taskList")}
-      />
-      <View style={styles.space} />
+
+    
+        <View style={styles.buttonContainer}>
+          <Button mode="contained" onPress={handleOkPress} style={styles.button}>
+            OK
+          </Button>
+          <Button mode="contained" onPress={handleCancelPress} style={styles.button}>
+            Cancel
+          </Button>
+        </View>
+
+        <Button
+          mode="contained" // Estilo do botão
+          onPress={handleTaskListPress}
+          style={styles.taskListButton}
+        >
+          Ir para Lista de Tarefas
+        </Button>
+
+        {/* Espaçamento pode ser feito com margens ou um <View> vazio */}
+        <View style={{ height: 70 }} />
     </ScrollView>
   );
 }
 
-// Exemplos de Listas
-function App() {
-  // return <FlatListExample />;
-  return <SectionListExample />;
-}
-
+// Manter ou adaptar os estilos
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: "flex-start",
-    alignItems: "center",
-    backgroundColor: "beige",
-    padding: 15,
+  containerBase: {
+    backgroundColor: "#FFFACD",
+    alignItems: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 10,
   },
-  title: {
-    fontSize: 42,
-    fontWeight: "bold",
-    marginBottom: 30,
-  },
+   titleText: {
+     fontWeight: 'bold',
+     marginBottom: 20,
+     textAlign: 'center'
+   },
   avatar: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
+    
+    marginBottom: 20,
   },
-  text: {
-    fontSize: 16,
-    marginTop: 30,
+  card: {
+    width: '95%',
+    marginTop: 5,
+    marginBottom: 10,
+  },
+  descriptionText: {
+     textAlign: 'center',
   },
   input: {
-    height: 45,
-    width: 200,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
+    width: '80%',
+    marginTop: 10,
   },
-  space: {
-    height: 70,
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 15,
   },
-  buttonsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: 250,
+  button: {
+    marginHorizontal: 10,
   },
+  taskListButton: {
+    marginTop: 20,
+    width: '80%',
+  }
 });
