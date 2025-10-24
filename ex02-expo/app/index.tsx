@@ -67,20 +67,20 @@ export default function Index() {
         </View>
 
         <Button
-          mode="contained" // Estilo do botão
+          mode="contained" 
           onPress={handleTaskListPress}
           style={styles.taskListButton}
         >
           Ir para Lista de Tarefas
         </Button>
 
-        {/* Espaçamento pode ser feito com margens ou um <View> vazio */}
+        
         <View style={{ height: 70 }} />
     </ScrollView>
   );
 }
 
-// Manter ou adaptar os estilos
+
 const styles = StyleSheet.create({
   containerBase: {
     backgroundColor: "#FFFACD",
